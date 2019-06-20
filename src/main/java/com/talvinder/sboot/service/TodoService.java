@@ -24,13 +24,10 @@ public class TodoService {
     }
 
     public List<Todo> retrieveTodos(String user) {
-    	System.out.println("Inside retrieveTodos.....");
-    	System.out.println("find user = " + user);
         List<Todo> filteredTodos = new ArrayList<Todo>();
         for (Todo todo : todos) {
         	// Generally good to not allow case insensitive usernames.
             if (todo.getUser().equalsIgnoreCase(user)) {
-            	System.out.println("user = " + user +" todo:user= " + todo.getUser());
                 filteredTodos.add(todo);
             }
         }
@@ -51,4 +48,26 @@ public class TodoService {
             }
         }
     }
+    
+    public Todo retrieveTodo(int id) {
+        for (Todo todo : todos) {
+        	// Generally good to not allow case insensitive usernames.
+            if (todo.getId() == id) {
+            	return todo;
+            }
+        }
+        return null;
+    }
+    
+    // simplest update method.
+    public void updateTodo(Todo todo) {
+    	// Ideally match and update.
+    	// remove existing one.
+    	todos.remove(todo);
+    	
+    	// add new updated one.
+    	todos.add(todo);
+    }
+    
+       
 }

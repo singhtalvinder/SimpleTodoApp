@@ -1,3 +1,4 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 	<title>Todo-activities..</title>
@@ -8,17 +9,36 @@
 	<div class="container">
 		<h2>${userName}- add more tasks here. </h2>
 		
-		<form method="post">
+		<form:form method="post" modelAttribute="todo">
+		<form:hidden path="id"/>
 		<fieldset class="form-group">
-			<label>Description:</label>
-			<input type="text" 
+			<form:label path="desc">Description:</form:label>
+			<form:input type="text" 
+				path="desc"
 				class= "form-control"
-				name="desc" required="required"/>
+				required="required"/>
+				<form:errors path="desc" cssClass="text-warning"></form:errors>
+		</fieldset>
+		<fieldset class="form-group">
+			<form:label path="targetDate">Target date:</form:label>
+			<form:input type="text" 
+				path="targetDate"
+				class= "form-control"
+				required="required"/>
+				<form:errors path="targetDate" cssClass="text-warning"></form:errors>
 		</fieldset>
 		<button type="submit" class="btn btn-success">Add</button>			 
-		</form>
+		</form:form>
 	</div>
+	
 	<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
 	<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-</body>
+	<script src="webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js"></script>
+	<script>
+		$('#targetDate').datepicker({
+			format : 'dd/mm/yyyy'
+		});
+	</script>
+
+	</body>
 </html>

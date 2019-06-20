@@ -1,29 +1,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 	<head>
-	<title>Todo for:${userName}.</title>
+	<title>Listing Todos</title>
 	<link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css"
 	      rel="stylesheet">
 	</head>
 	<body>
 	<div class="container">
-		<h1>Your todos.</h1>
+		<h1>Your Tasks.</h1>
 		<table class="table table-striped">
-			<caption> Your tasks go here...</caption>
+			<caption>Hi ${userName}.Your tasks are...</caption>
 			<thead>
 				<tr>
 					<th>Description</th>
 					<th>Target date</th>
 					<th>Is completed?</th>
-					<th>Delete</th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${todos}" var="todo">
 					<tr>
 						<td>${todo.desc} </td>
-						<td>${todo.targetDate}</td>
+						<td><fmt:formatDate value ="${todo.targetDate}" pattern="dd/MM/yyyy"/></td>
 						<td>${todo.done} </td>
+						<td><a type="button" 
+							class="btn btn-success" 
+							href="/update-todo?id=${todo.id}">Update</a>
 						<td><a type="button" 
 							class="btn btn-warning" 
 							href="/delete-todo?id=${todo.id}">Delete</a>
