@@ -1,16 +1,9 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<html>
-	<head>
-	<title>Listing Todos</title>
-	<link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css"
-	      rel="stylesheet">
-	</head>
-	<body>
+<%@ include file="common/header.jspf" %>
+<%@ include file="common/navigation.jspf" %>
 	<div class="container">
 		<h1>Your Tasks.</h1>
 		<table class="table table-striped">
-			<caption>Hi ${userName}.Your tasks are...</caption>
+			<caption>A list of your work items are listed below:-</caption>
 			<thead>
 				<tr>
 					<th>Description</th>
@@ -44,5 +37,4 @@
 		 <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		 
 	 </div>
- 	</body>
-</html>
+<%@ include file="common/footer.jspf" %>

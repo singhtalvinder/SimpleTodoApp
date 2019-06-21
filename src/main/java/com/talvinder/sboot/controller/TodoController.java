@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,14 +17,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.talvinder.sboot.model.Todo;
 import com.talvinder.sboot.service.TodoService;
 
 @Controller
 //Access the model variable name here as well.
-@SessionAttributes("userName")
+//@SessionAttributes("userName")
 public class TodoController {
 
 	// LoginService: Service to validate logging-in user.
@@ -45,13 +45,26 @@ public class TodoController {
 	public String showTodos(ModelMap model) {
 		
 		// Get the logged-in username and then its activities.
-		String uName = (String)model.get("userName");
+		String uName = getLoggedInUserName(model);
 		
 		// Data is to be passed through a model from the
 		// controller to the view.
 		System.out.println("Calling retrieveTodos.......");
 		model.put("todos", service.retrieveTodos(uName));
 		return "list-todos";
+	}
+
+	private String getLoggedInUserName(ModelMap model) {
+		// In Spring, loggedinuser is called principal.
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		// check if this principal is an instance of spring defined UserDetails class.
+		if(principal instanceof UserDetails) {
+			return ((UserDetails)principal).getUsername();
+		}
+		
+		//Not found case.
+		return principal.toString();
 	}
 	
 	// Get method.
@@ -61,7 +74,7 @@ public class TodoController {
 		// in the jsp form.
 		model.addAttribute("todo",
 								new Todo(0, 
-										(String)model.get("userName"),
+										getLoggedInUserName(model),
 										"describe your task",
 										new Date(),
 										false));
@@ -81,7 +94,7 @@ public class TodoController {
 		}
 		// add it.
 		service.addTodo(
-				(String)model.get("userName"),
+				getLoggedInUserName(model),
 				todo.getDesc(),
 				todo.getTargetDate(),
 				false);
@@ -119,7 +132,7 @@ public class TodoController {
 		}
 		
 		// Get the user for this task.
-		todo.setUser((String)model.get("userName"));
+		todo.setUser(getLoggedInUserName(model));
 
 		
 		// retrieve for current user.
